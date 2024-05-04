@@ -37,10 +37,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install "nbqa[toolchain]" pylint isort "black[jupyter]" mypy pyupgrade flake8-variables-names pep8-naming flake8-functions-names
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: pyupgrade
-        run: |
-          pyupgrade $(git ls-files '*.py')
-          nbqa pyupgrade $(git ls-files '*.ipynb')
       - name: Flake8
         run: |
           flake8 --ignore=E203,E501,W291,F821,F401 $(git ls-files '*.py')    
@@ -61,6 +57,10 @@ jobs:
         run: |
           mypy --ignore-missing-imports $(git ls-files '*.py')
           nbqa mypy --ignore-missing-imports $(git ls-files '*.ipynb')
+      - name: pyupgrade
+        run: |
+          pyupgrade $(git ls-files '*.py')
+          nbqa pyupgrade $(git ls-files '*.ipynb')    
   prettier:
     timeout-minutes: 1
     runs-on: ubuntu-latest
